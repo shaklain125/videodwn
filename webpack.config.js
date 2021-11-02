@@ -55,11 +55,6 @@ const def_conf = options =>
  */
 const conf = options =>
 	def_conf(options)
-		.setOptimization({
-			splitChunks: {
-				name: "vendor",
-			},
-		})
 		.setHtmlWebpackPlugin({
 			inject: true,
 			template: "./src/app/popup/index.html",
