@@ -1,0 +1,53 @@
+{
+	// Redux snippets in .tsx files
+	"Get single state from Redux store": {
+		"prefix": "rdsi",
+		"body": [
+			"const ${1:stateName} = useSelector$2<RootState$3, ${4:reducerName}.State[\"${1:stateName}\"]>(",
+			"\t({ ${5:reducerKey} }) => ${5:reducerKey}.${1:stateName}",
+			");",
+			"$6"
+		],
+		"description": "useSelector statement to get the state from the Redux store",
+		"scope": "typescriptreact"
+	},
+	"Get reducer Key to access its states from Redux store": {
+		"prefix": "rds",
+		"body": [
+			"const { ${3:reducerKey} } = useSelector$1<RootState$2, RootState>(state => state);\n$4"
+		],
+		"description": "useSelector statement to get the state from the Redux store",
+		"scope": "typescriptreact"
+	},
+	"Redux dispatch statment": {
+		"prefix": "rdd",
+		"body": ["const dispatch = useDispatch$1<AppDispatch$2>();\n$3"],
+		"description": "useDispatch statement to dispatch redux store actions",
+		"scope": "typescriptreact"
+	},
+	//material-ui
+	"Use Theme from Material UI": {
+		"prefix": "mth",
+		"body": ["const theme = useTheme$1();\n$2"],
+		"description": "useTheme statement to use Material UI theme",
+		"scope": "typescriptreact"
+	},
+	// General
+	"Typescript React Functional Component": {
+		"prefix": "tfc",
+		"body": [
+			"import React, { FC } from \"react\";",
+			"\ntype Props = {};",
+			"\nconst $TM_FILENAME_BASE: FC<Props> = () => {",
+			"\n\treturn (",
+			"\t\t<>",
+			"\t\t\t${0:component}",
+			"\t\t</>",
+			"\t);",
+			"};",
+			"\nexport { $TM_FILENAME_BASE };"
+		],
+		"description": "React functional component with Typescript",
+		"scope": "typescriptreact"
+	}
+}

@@ -1,0 +1,38 @@
+html,
+body,
+#app {
+	background-color: black;
+	color: white;
+	width: 500px;
+	height: 384px;
+	padding: 0;
+	margin: 0;
+}
+
+:not(input):not(textarea),
+:not(input):not(textarea)::after,
+:not(input):not(textarea)::before {
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+*:focus {
+	outline: 0 !important;
+	border: unset !important;
+}
+
+.oneline_ellipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box !important;
+	-webkit-line-clamp: 1; /* number of lines to show */
+	-webkit-box-orient: vertical;
+}
+
+.twolines_ellipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box !important;
+	-webkit-line-clamp: 2; /* number of lines to show */
+	-webkit-box-orient: vertical;
+}

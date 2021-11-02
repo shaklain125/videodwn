@@ -1,0 +1,43 @@
+{
+	"manifest_version": 2,
+	"name": "VideoDwn",
+	"description": "Video downloader",
+	"version": "1.0",
+	"browser_action": {
+		"default_icon": {
+			"16": "icon.png",
+			"32": "icon.png",
+			"48": "icon.png",
+			"128": "icon.png"
+		},
+		"default_popup": "html/popup.html"
+	},
+	"options_ui": {
+		"page": "html/options.html"
+	},
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["js/content_script.js"],
+			"all_frames": true
+		}
+	],
+	"background": {
+		"scripts": ["js/background.js"]
+	},
+	"icons": {
+		"16": "icon.png",
+		"32": "icon.png",
+		"48": "icon.png",
+		"128": "icon.png"
+	},
+
+	"permissions": [
+		"storage",
+		"downloads",
+		"webRequest",
+		"webRequestBlocking",
+		"tabs",
+		"<all_urls>"
+	]
+}
