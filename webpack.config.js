@@ -53,12 +53,24 @@ const def_conf = options =>
  * @param {DefaultConfigParam} options
  * @returns {Config}
  */
-const popup_config = options =>
+const conf = options =>
 	def_conf(options)
+		.setOptimization({
+			splitChunks: {
+				name: "vendor",
+			},
+		})
 		.setHtmlWebpackPlugin({
 			inject: true,
 			template: "./src/app/popup/index.html",
 			filename: `../html/popup.html`,
+			excludeChunks: Object.keys(options.filepath).filter(v => v != "popup"),
+		})
+		.setHtmlWebpackPlugin({
+			inject: true,
+			template: "./src/app/options/index.html",
+			filename: "../html/options.html",
+			excludeChunks: Object.keys(options.filepath).filter(v => v != "options"),
 		})
 		.enableScopedCssLoader(true)
 		.setCopyPluginOptions({
@@ -67,58 +79,19 @@ const popup_config = options =>
 		.build();
 
 /**
- *
- * @param {DefaultConfigParam} options
- * @returns {Config}
- */
-const options_config = options =>
-	def_conf(options)
-		.setHtmlWebpackPlugin({
-			inject: true,
-			template: "./src/app/options/index.html",
-			filename: "../html/options.html",
-		})
-		.enableScopedCssLoader(true)
-		.build();
-
-/**
- *
- * @param {DefaultConfigParam} options
- * @returns {Config}
- */
-const background_config = options => def_conf(options).build();
-
-/**
- *
- * @param {DefaultConfigParam} options
- * @returns {Config}
- */
-const content_script_config = options => def_conf(options).build();
-
-/**
  * @param {boolean} watch
  * @returns returns a webpack configuration for a userscript.
  */
 const build = watch => {
 	return [
-		popup_config({
-			filepath: "./src/app/popup/index.tsx",
-			outputName: `popup`,
-			watch,
-		}),
-		options_config({
-			filepath: "./src/app/options/index.tsx",
-			outputName: `options`,
-			watch,
-		}),
-		background_config({
-			filepath: "./src/app/background/index.ts",
-			outputName: `background`,
-			watch,
-		}),
-		content_script_config({
-			filepath: "./src/app/content_script/index.ts",
-			outputName: `content_script`,
+		conf({
+			filepath: {
+				popup: "./src/app/popup/index.tsx",
+				options: "./src/app/options/index.tsx",
+				content_script: "./src/app/content_script/index.ts",
+				background: "./src/app/background/index.ts",
+			},
+			outputName: "[name]",
 			watch,
 		}),
 	];
