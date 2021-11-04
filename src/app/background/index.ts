@@ -1,5 +1,6 @@
 import { addRefererToDownloadLink, DownloadLinkRefererTuple } from "@src/lib/DownloadHelper";
 import { Mp4Upload } from "@src/lib/Mp4Upload";
+import { getAll, rmKey } from "@src/lib/Storage";
 
 console.log("Hello from background.js");
 
@@ -34,4 +35,17 @@ chrome.webRequest.onHeadersReceived.addListener(
 
 chrome.runtime.onMessage.addListener((req, sender, sendResp) => {
 	if (req == "tab_id") sendResp({ id: sender.tab?.id, url: sender.tab?.url });
+});
+
+chrome.tabs.onActivated.addListener(_ => {
+	chrome.tabs.query({}, function (tabs) {
+		const tab_ids = tabs.map(({ id }) => id).filter(Boolean);
+		getAll().then(v => {
+			Object.keys(v)
+				.filter(key => !tab_ids.includes(parseInt(key)))
+				.forEach(key => {
+					rmKey(key);
+				});
+		});
+	});
 });

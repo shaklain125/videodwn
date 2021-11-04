@@ -35,6 +35,14 @@ const clearAll = async () => {
 	});
 };
 
+const rmKey = async (key: string) => {
+	return new Promise<void>(resolve => {
+		chrome.storage.sync.remove(key, () => {
+			resolve();
+		});
+	});
+};
+
 const getAll = async () => {
 	return new Promise<any>(resolve => {
 		chrome.storage.sync.get(null, items => {
@@ -44,4 +52,5 @@ const getAll = async () => {
 	});
 };
 
-export { clearAll, updateKey, setLocal, getLocal, getAll };
+export { clearAll, updateKey, setLocal, getLocal, getAll, rmKey };
+

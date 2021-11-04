@@ -31,4 +31,8 @@ const bytesToSize = (bytes: number, decimals: number = 1) => {
 const range = (start: number, end?: number) =>
 	Array.from({ length: end ? end - start + 1 : start }, (_, i) => (end ? start + i : i));
 
-export { xhr_get_example, importJq, arrSet, contentTypeToExt, bytesToSize, range };
+const disableLog = (value?: boolean) => {
+	if (value || value == undefined) console.log = (...data: any[]) => {};
+};
+
+export { xhr_get_example, importJq, arrSet, contentTypeToExt, bytesToSize, range, disableLog };

@@ -1,9 +1,11 @@
 import { downloadLink, genDownloadData } from "@src/lib/DownloadHelper";
 import { injectJW } from "@src/lib/injectJW";
 import { getAll, updateKey } from "@src/lib/Storage";
-import { arrSet, importJq } from "@src/utils/helper";
+import { arrSet, disableLog, importJq } from "@src/utils/helper";
 
 var links_l: (downloadLink | string)[] = [];
+
+disableLog(false);
 
 const filterLinks = (links: any) => {
 	const get_original_url = (v: downloadLink | string) =>
@@ -25,8 +27,9 @@ const pushLink = (tab_id: number | null, callback?: (links: any) => any) => {
 			// console.log("UPDATE", [...(current || []), ...links_l]);
 			// return [...(current || []), ...links_l];
 			console.log("UPDATE", links_l);
-			getAll().then(v => console.log("ALL", v));
 			return links_l;
+		}).then(() => {
+			getAll().then(v => console.log("ALL", v));
 		});
 };
 
@@ -41,7 +44,6 @@ const pushLink = (tab_id: number | null, callback?: (links: any) => any) => {
 		is_main_frame = url == window.location.href;
 		if (is_main_frame) {
 			console.log("IS_MAIN");
-
 			if (id) chrome.storage.sync.remove(id.toString());
 		}
 	});
