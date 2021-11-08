@@ -8,52 +8,17 @@ import {
 	ListItemText,
 	Typography,
 } from "@mui/material";
-import {
-	checkResponse,
-	downloadLink,
-	download_file,
-	download_with_attr,
-} from "@src/lib/DownloadHelper";
+import { checkResponse, dlink, download_file, download_with_attr } from "@src/lib/DownloadHelper";
 import { Mp4Upload } from "@src/lib/Mp4Upload";
 import React, { FC } from "react";
 
 type Props = {
-	link?: downloadLink;
-	original_link?: string;
-	none?: boolean;
+	original_link: string;
+	link?: dlink;
 };
 
-const El: FC = () => (
-	<React.Fragment>
-		<ListItemButton>
-			<ListItemAvatar>
-				<Avatar>
-					<Movie />
-				</Avatar>
-			</ListItemAvatar>
-			<ListItemText
-				primary="Vacation"
-				secondary={
-					<React.Fragment>
-						<Typography
-							sx={{ display: "inline" }}
-							component="span"
-							variant="body2"
-							color="text.primary">
-							Sandra Adams
-						</Typography>
-						{" — Do you have Paris recommendations? Have you ever…"}
-					</React.Fragment>
-				}
-			/>
-		</ListItemButton>
-		<Divider variant="inset" component="li" sx={{ ml: 0 }} />
-	</React.Fragment>
-);
-
-const DownloadLink: FC<Props> = ({ link, original_link, none }) => {
+const DownloadLink: FC<Props> = ({ link, original_link }) => {
 	if (!link) {
-		if (none) return <El />;
 		return (
 			<ListItemButton>
 				<ListItemAvatar>
@@ -89,6 +54,7 @@ const DownloadLink: FC<Props> = ({ link, original_link, none }) => {
 			</ListItemButton>
 		);
 	}
+
 	return (
 		<React.Fragment>
 			<ListItemButton

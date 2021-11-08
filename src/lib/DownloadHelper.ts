@@ -24,14 +24,25 @@ const addRefererToDownloadLink = (referer: string, download_link_match_pattern: 
 	);
 };
 
-export type downloadLink = {
+type dlinkCommonData = {
 	url: string;
+	origin?: string | null;
+};
+
+export type dlink = {
+	type: "dlink";
 	original_url: string;
 	filename: string;
 	ext: string | null;
 	size: string;
 	rawSize: number;
-} | null;
+} & dlinkCommonData;
+
+export type urlLink = {
+	type: "url";
+} & dlinkCommonData;
+
+export type downloadLink = dlink | urlLink | null;
 
 const download_file = (
 	options: chrome.downloads.DownloadOptions,
@@ -114,17 +125,18 @@ const genDownloadData = (
 	const rawSize = contentLength;
 	const size = bytesToSize(rawSize);
 	return {
+		type: "dlink",
 		url: new_url,
 		original_url: url,
 		filename: getDownloadFilename(new_url),
 		ext,
 		size,
 		rawSize,
-	};
+	} as dlink;
 };
 
 const changeFilenameFromDlink = (dlink: downloadLink, download_filename?: string) => {
-	if (!dlink) return null;
+	if (!dlink || dlink.type == "url") return null;
 	const { original_url, ext } = dlink;
 	const new_url = changeDownloadFilename(original_url, download_filename, ext);
 	return {
@@ -134,6 +146,15 @@ const changeFilenameFromDlink = (dlink: downloadLink, download_filename?: string
 	};
 };
 
+type fetchParams = {
+	url: string;
+	method?: string;
+	headers?: Record<string, string>;
+	download_filename?: string;
+	timeout?: number;
+	body?: Document | XMLHttpRequestBodyInit | null;
+};
+
 const fetchDownloadData = ({
 	url,
 	download_filename,
@@ -141,15 +162,8 @@ const fetchDownloadData = ({
 	method = "GET",
 	body,
 	headers = {},
-}: {
-	url: string;
-	method?: string;
-	headers?: Record<string, string>;
-	download_filename?: string;
-	timeout?: number;
-	body?: Document | XMLHttpRequestBodyInit | null;
-}) => {
-	return new Promise<downloadLink>(resolve => {
+}: fetchParams) => {
+	return new Promise<dlink | null>(resolve => {
 		var resolved = false;
 		setTimeout(() => {
 			if (!resolved) {
@@ -178,6 +192,9 @@ const fetchDownloadData = ({
 	});
 };
 
+const get_original_url = (v: downloadLink) =>
+	v?.type == "dlink" ? (v?.original_url as string) : v?.url || "";
+
 export {
 	addRefererToDownloadLink,
 	download_with_attr,
@@ -189,4 +206,5 @@ export {
 	genDownloadData,
 	changeFilenameFromDlink,
 	fetchDownloadData,
+	get_original_url,
 };

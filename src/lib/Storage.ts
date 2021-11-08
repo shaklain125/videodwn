@@ -53,4 +53,3 @@ const getAll = async () => {
 };
 
 export { clearAll, updateKey, setLocal, getLocal, getAll, rmKey };
-

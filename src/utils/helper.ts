@@ -35,4 +35,37 @@ const disableLog = (value?: boolean) => {
 	if (value || value == undefined) console.log = (...data: any[]) => {};
 };
 
-export { xhr_get_example, importJq, arrSet, contentTypeToExt, bytesToSize, range, disableLog };
+const get_win = async (message_type: string) => {
+	return new Promise<any>(resolve => {
+		const lis1 = (event: any) => {
+			if (event.source != window) return;
+			if (event.data.type && event.data.type == message_type) {
+				window.removeEventListener("message", lis1);
+				resolve(event.data.data);
+			}
+		};
+		window.addEventListener("message", lis1, false);
+	});
+};
+
+const hashCode = (str: string) => {
+	var hash = 0;
+	if (str.length === 0) return hash.toString();
+	for (var i = 0; i < str.length; i++) {
+		hash = (hash << 5) - hash + str.charCodeAt(i);
+		hash |= 0;
+	}
+	return hash.toString();
+};
+
+export {
+	xhr_get_example,
+	importJq,
+	arrSet,
+	contentTypeToExt,
+	bytesToSize,
+	range,
+	disableLog,
+	get_win,
+	hashCode,
+};

@@ -2,8 +2,6 @@ import { addRefererToDownloadLink, DownloadLinkRefererTuple } from "@src/lib/Dow
 import { Mp4Upload } from "@src/lib/Mp4Upload";
 import { getAll, rmKey } from "@src/lib/Storage";
 
-console.log("Hello from background.js");
-
 const downloadLinkReferers: DownloadLinkRefererTuple[] = [
 	[Mp4Upload.origin_url, Mp4Upload.match_url_pattern],
 ];
@@ -37,7 +35,7 @@ chrome.runtime.onMessage.addListener((req, sender, sendResp) => {
 	if (req == "tab_id") sendResp({ id: sender.tab?.id, url: sender.tab?.url });
 });
 
-chrome.tabs.onActivated.addListener(_ => {
+chrome.tabs.onActivated.addListener(() => {
 	chrome.tabs.query({}, function (tabs) {
 		const tab_ids = tabs.map(({ id }) => id).filter(Boolean);
 		getAll().then(v => {

@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 const useStateRef = <S = any>(
 	initialState: S | (() => S)
-): [React.MutableRefObject<S>, (data: S) => void] => {
+): [React.MutableRefObject<S>, React.Dispatch<React.SetStateAction<S>>] => {
 	const [state, setState] = useState<S>(initialState);
 	const stateRef = useRef(state);
 	useEffect(() => {
